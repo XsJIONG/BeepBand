@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <windows.h>
-#define qdo 262 
+#define qdo 262
 #define qre 294
 #define qmi 330
 #define qfa 349
@@ -36,10 +36,40 @@
 #define sfa1 1480
 #define sso1 1661
 #define sla1 1865
-const int ALL[]={do,re,mi,fa,so,fa,mi,re,do,re,mi,fa,so,-1,fa,mi,re,mi,fa,fa,re,-1,mi,re,do,re,mi};
+const int q=250;
+const int ALL[]={
+0,1,qso,1,qla,1,do,1,re,2,mi,1,so,1,mi,1,do,1,re,3,do,1,so,1,mi,2,do,1,so,1,re,2,do,1,so,1,qsi,2,do,1,qsi,1,qso,2,qmi,1,qso,2,
+0,1,qso,1,qla,1,do,1,re,2,mi,1,so,1,mi,1,do,1,re,3,do,1,so,1,mi,2,do,1,so,1,re,2,do,1,so,1,qsi,2,qso,1,qla,1,do,1,so,2,re,2,
+mi,1,do,1,qso,1,re,2,mi,1,so,1,mi,2,do,1,qso,1,re,3,qsi,1,do,1,mi,1,do,1,qso,1,re,2,mi,1,so,1,mi,2,do,1,re,1,qsi,2,do,1,qso,2,mi,1,do,1,qso,1,re,2,mi,1,so,1,mi,2,
+do,1,re,3,do,1,so,1,re,2,do,1,so,1,re,2,do,1,so,1,re,1,do,1,so,1,re,1,do,1,so,1,re,1,do,1,so,1,
+mi,1,so,1,re,1,mi,-1,2,re,-5,2,do,1,re,1,mi,1,so,1,re,1,mi,-1,2,re,-3,2,do,1,re,1,do,1,mi,1,so,1,re,1,mi,-1,2,re,-5,2,do,1,re,1,mi,1,so,1,re,1,qso,-1,2,qla,-3,2,
+do,1,re,1,do,1,mi,1,so,1,re,1,mi,-1,2,re,-5,2,do,1,re,1,do,1,mi,1,so,1,re,1,mi,-1,2,re,-3,2,do,1,re,1,do,1,mi,1,so,1,re,1,mi,-1,2,re,-3,2,do,1,re,1,do,1,mi,1,so,1,mi,1,so,1,mi,1,so,1,mi,1,so,1,
+-1,2,//Change the Bit
+mi,1,0,3,mi,1,0,2,mi,1,0,2,mi,1,0,1,mi,1,0,1,do,1,0,1,re,1,0,3,re,1,0,2,re,1,0,2,do,1,0,1,re,1,0,1,so,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,2,la,1,so,1,re,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,1,0,1,re,1,0,1,qso,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,mi,1,0,1,mi,1,0,1,do,1,0,1,re,1,0,3,re,1,0,2,re,1,0,2,do,1,0,1,re,1,0,1,so,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,2,la,1,so,1,re,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,qso,1,0,1,qla,1,0,1,do,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,mi,1,0,1,mi,1,0,1,do,1,0,1,re,1,0,3,re,1,0,2,re,1,0,2,do,1,0,1,re,1,0,1,so,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,2,la,1,so,1,re,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,1,0,1,re,1,0,1,qso,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,mi,1,0,1,mi,1,0,1,do,1,0,1,re,1,0,3,re,1,0,2,re,1,0,2,do,1,0,1,re,1,0,1,so,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,2,la,1,so,1,re,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,qso,1,0,1,do,1,0,1,re,1,0,1,-1,1,//Change to the normal bit
+//Second repeat
+0,1,qso,1,qla,1,do,1,re,2,mi,1,so,1,mi,1,do,1,re,3,do,1,so,1,mi,2,do,1,so,1,re,2,do,1,so,1,qsi,2,do,1,qsi,1,qso,2,qmi,1,qso,2,
+0,1,qso,1,qla,1,do,1,re,2,mi,1,so,1,mi,1,do,1,re,3,do,1,so,1,mi,2,do,1,so,1,re,2,do,1,so,1,qsi,2,qso,1,qla,1,do,1,so,2,re,2,
+mi,1,do,1,qso,1,re,2,mi,1,so,1,mi,2,do,1,qso,1,re,3,qsi,1,do,1,mi,1,do,1,qso,1,re,2,mi,1,so,1,mi,2,do,1,re,1,qsi,2,do,1,qso,2,mi,1,do,1,qso,1,re,2,mi,1,so,1,mi,2,
+do,1,re,3,do,1,so,1,re,2,do,1,so,1,re,2,do,1,so,1,re,1,do,1,so,1,re,1,do,1,so,1,re,1,do,1,so,1,
+mi,1,so,1,re,1,mi,-1,2,re,-5,2,do,1,re,1,mi,1,so,1,re,1,mi,-1,2,re,-3,2,do,1,re,1,do,1,mi,1,so,1,re,1,mi,-1,2,re,-5,2,do,1,re,1,mi,1,so,1,re,1,qso,-1,2,qla,-3,2,
+do,1,re,1,do,1,mi,1,so,1,re,1,mi,-1,2,re,-5,2,do,1,re,1,do,1,mi,1,so,1,re,1,mi,-1,2,re,-3,2,do,1,re,1,do,1,mi,1,so,1,re,1,mi,-1,2,re,-3,2,do,1,re,1,do,1,mi,1,so,1,mi,1,so,1,mi,1,so,1,mi,1,so,1,
+-1,2,//Change the Bit
+mi,1,0,3,mi,1,0,2,mi,1,0,2,mi,1,0,1,mi,1,0,1,do,1,0,1,re,1,0,3,re,1,0,2,re,1,0,2,do,1,0,1,re,1,0,1,so,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,2,la,1,so,1,re,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,1,0,1,re,1,0,1,qso,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,mi,1,0,1,mi,1,0,1,do,1,0,1,re,1,0,3,re,1,0,2,re,1,0,2,do,1,0,1,re,1,0,1,so,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,2,la,1,so,1,re,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,qso,1,0,1,qla,1,0,1,do,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,mi,1,0,1,mi,1,0,1,do,1,0,1,re,1,0,3,re,1,0,2,re,1,0,2,do,1,0,1,re,1,0,1,so,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,2,la,1,so,1,re,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,1,0,1,re,1,0,1,qso,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,mi,1,0,1,mi,1,0,1,do,1,0,1,re,1,0,3,re,1,0,2,re,1,0,2,do,1,0,1,re,1,0,1,so,1,0,1,mi,1,0,3,mi,1,0,2,mi,1,0,2,so,2,la,1,so,1,re,1,0,1,
+mi,1,0,3,mi,1,0,2,mi,1,0,2,qso,1,0,1,do,1,0,1,re,1,0,1,-1,1,//Change to the normal bit
+mi,1,do,1,qso,1,re,2,mi,1,so,1,mi,2,do,1,qso,1,re,2,qsi,1,do,1,mi,1,do,1,qso,1,re,1,re,1,mi,1,so,1,mi,2,do,1,re,1,qsi,2,do,1,qso,2,mi,1,do,1,qso,1,re,2,mi,1,so,1,mi,2,do,1,re,3,do,1,so,1,re,2,do,1,so,1,re,2,do,1,so,1,do,1,so,1,re,1,do,1,so,1,re,1,do,1,so,4
+};
 int main() {
-	int pai=200;
 	int a=sizeof(ALL)/sizeof(int);
-	for (int i=0;i<a;i++) if (ALL[i]==-1) Sleep(pai*2); else Beep(ALL[i],pai);
+	int C=q;
+	for (int i=0;i<a;i+=2) if (ALL[i]==0) Sleep(C*ALL[i+1]); else if (ALL[i]<0) C=-q*ALL[i]/ALL[i+1]; else if (ALL[i+1]<0) Beep(ALL[i],-C*ALL[i+1]/ALL[i+2]),i++; else Beep(ALL[i],C*ALL[i+1]);
 	return 0;
 }
