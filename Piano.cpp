@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <windows.h>
+#include <ctime>
+#define THREAD DWORD WINAPI
 #define KEY_DOWN(VK_NONAME) ((GetAsyncKeyState(VK_NONAME) & 0x8000) ? 1:0)
 #define qdo 262
 #define qre 294
@@ -49,18 +51,51 @@ bool pressed[1000];
 int T=50;
 int O=7;
 bool check(char c) {
-    if (KEY_DOWN(c)) {
-        if (!pressed[c]) {pressed[c]=1;return 1;}
-    } else pressed[c]=00;
-    return 0;
+	if (KEY_DOWN(c)) {
+		if (!pressed[c]) {pressed[c]=1;return 1;}
+	} else pressed[c]=0;
+	return 0;
 }
+HANDLE LastThread=NULL;
+THREAD UP(LPVOID para) {
+	for (int i=500;i<=1000;i+=10) Beep(i,10);
+	LastThread=NULL;
+}
+THREAD RING(LPVOID para) {
+	for (int i=0;i<6;i++) Beep(1000,100),Sleep(100);
+	LastThread=NULL;
+}
+THREAD DOWN(LPVOID para) {
+	for (int i=1000;i>=500;i-=10) Beep(i,10);
+	LastThread=NULL;
+}
+void RunThread(LPTHREAD_START_ROUTINE a) {
+	if (LastThread!=NULL) CloseHandle(LastThread);
+	LastThread=CreateThread(NULL,0,a,NULL,0,NULL);
+}
+bool special=0;
 int main() {
-    int len=sizeof(Common)/sizeof(int);
-    while (true) {
-        for (int i='1';i<='8';i++) if (check(i)) Beep(Common[i-'1'+O],T);
-        if (check('0')) if (O<len-6) O+=7,puts("ÉýÆß½×"); else puts("³¬ÏÞ£¡");
-        if (check('9')) if (O>0) O-=7,puts("½µÆß½×"); else puts("³¬ÏÞ£¡");12
-        Sleep(10);
-    }
+	ShowWindow(GetForegroundWindow(),false);
+	int len=sizeof(Common)/sizeof(int);
+	bool a;
+	srand(time(0));
+	while (true) {
+		a=0;
+		for (int i='1';i<='8';i++) if (check(i)) Beep(Common[i-'1'+O],T),a=1;
+		if (check('0')) {a=1;O+=7;if (O+7>=len) O=0;}
+		else if (check('9')) {a=1;O-=7;if (O<0) O=len-7;}
+		if (special) {
+			if (check('D')) RunThread(DOWN),a=1;
+			else if (check('R')) RunThread(RING),a=1;
+			else if (check('Q')) Beep(1000,T),exit(0);
+			else if (check('U')) RunThread(UP),a=1;
+		}
+		if (check(MOUSE_WHEELED)) special=!special,Beep(1000,T);
+		if (!a) {
+			for (int i='A';i<='Z';i++) if (check(i)) {a=1;break;}
+			if (a) Beep(Common[rand()%(len-21)],T);
+		}
+		Sleep(10);
+	}
 	return 0;
 }
