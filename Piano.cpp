@@ -49,15 +49,18 @@ bool pressed[1000];
 int T=50;
 int O=7;
 bool check(char c) {
-    if (KEY_DOWN(c)) return 1;
+    if (KEY_DOWN(c)) {
+        if (!pressed[c]) {pressed[c]=1;return 1;}
+    } else pressed[c]=00;
     return 0;
 }
 int main() {
     int len=sizeof(Common)/sizeof(int);
     while (true) {
         for (int i='1';i<='8';i++) if (check(i)) Beep(Common[i-'1'+O],T);
-        if (check('=')) if (O<len-6) O+=7,puts("++");
-        if (check('-')) if (O>0) O-=7,puts("--");
+        if (check('0')) if (O<len-6) O+=7,puts("ÉýÆß½×"); else puts("³¬ÏÞ£¡");
+        if (check('9')) if (O>0) O-=7,puts("½µÆß½×"); else puts("³¬ÏÞ£¡");12
+        Sleep(10);
     }
 	return 0;
 }
