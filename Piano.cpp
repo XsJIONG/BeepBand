@@ -74,6 +74,7 @@ void RunThread(LPTHREAD_START_ROUTINE a) {
 	LastThread=CreateThread(NULL,0,a,NULL,0,NULL);
 }
 bool special=0;
+bool UsePos=1;
 int main() {
 	ShowWindow(GetForegroundWindow(),false);
 	int len=sizeof(Common)/sizeof(int);
@@ -89,11 +90,12 @@ int main() {
 			else if (check('R')) RunThread(RING),a=1;
 			else if (check('Q')) Beep(1000,T),exit(0);
 			else if (check('U')) RunThread(UP),a=1;
+			else if (check('P')) UsePos=!UsePos;
 		}
 		if (check(MOUSE_WHEELED)) special=!special,Beep(1000,T);
 		if (!a) {
 			for (int i='A';i<='Z';i++) if (check(i)) {a=1;break;}
-			if (a&&((rand()%10)<4)) Beep(Common[rand()%(len-30)],T);
+			if (a&&(!UsePos||((rand()%10)<3))) Beep(Common[rand()%(len-30)],T);
 		}
 		Sleep(10);
 	}
