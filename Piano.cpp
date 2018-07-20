@@ -93,7 +93,7 @@ int main() {
 		if (check(MOUSE_WHEELED)) special=!special,Beep(1000,T);
 		if (!a) {
 			for (int i='A';i<='Z';i++) if (check(i)) {a=1;break;}
-			if (a) Beep(Common[rand()%(len-30)],T);
+			if (a&&((rand()%10)<4)) Beep(Common[rand()%(len-30)],T);
 		}
 		Sleep(10);
 	}
